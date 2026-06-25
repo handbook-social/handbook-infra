@@ -13,6 +13,7 @@ services:
       - handbook-network
 
   server-api:
+    image: ${IMAGE_REF:-ghcr.io/huydotcode/server-api:latest}
     build:
       context: ../server-api
       dockerfile: Dockerfile
@@ -39,6 +40,7 @@ services:
       - handbook-network
 
   realtime-server:
+    image: ${IMAGE_REF:-ghcr.io/huydotcode/realtime-server:latest}
     build:
       context: ../realtime-server
       dockerfile: Dockerfile
