@@ -29,7 +29,7 @@ infra/
 Dự án sử dụng mạng cầu nối (Bridge Network) `handbook-network` để các dịch vụ giao tiếp với nhau qua tên container (Container Name).
 
 ### 1. Local Development (`docker-compose.yml`)
-Khởi chạy toàn bộ hệ thống gồm các dịch vụ backend, frontend và cơ sở dữ liệu local:
+Khởi chạy toàn bộ hệ thống gồm các dịch vụ backend, cơ sở dữ liệu local và giám sát (Frontend client được khởi chạy độc lập thông qua npm/pnpm trên máy host để thuận tiện cho việc phát triển):
 
 | Dịch vụ | Docker Image / Build Context | Cổng Host | Mục đích |
 | :--- | :--- | :--- | :--- |
@@ -37,15 +37,14 @@ Khởi chạy toàn bộ hệ thống gồm các dịch vụ backend, frontend v
 | **redis** | `redis:alpine` | `6379` | Cache, event broker & rate limiting |
 | **server-api** | `./server-api` | `8000` | REST API Server (Express.js) |
 | **realtime-server** | `./realtime-server` | `5000` | Socket.IO Server (Realtime) |
-| **client** | `./client` | `3000` | Frontend (Next.js 15 App Router) |
 | **prometheus** | `prom/prometheus:latest` | `9090` | Thu thập metrics hiệu năng |
 | **grafana** | `grafana/grafana:latest` | `4000` | Trực quan hóa metrics dạng đồ thị |
 
 ### 2. Production (`docker-compose.prod.yml`)
 Sử dụng khi triển khai trên server thực tế (ví dụ: DigitalOcean Droplet). Môi trường production tối ưu hóa tài nguyên bằng cách:
-* **Không chạy container `client`**: Next.js client được tối ưu hóa triển khai độc lập trên Vercel.
 * **Không chạy container `mongodb`**: Dữ liệu lưu trữ tập trung trên dịch vụ đám mây MongoDB Atlas.
 * Chạy các thành phần backend và giám sát: `server-api`, `realtime-server`, `redis`, `prometheus`, `grafana`.
+* (Frontend client vẫn được triển khai độc lập trên Vercel).
 
 ---
 
